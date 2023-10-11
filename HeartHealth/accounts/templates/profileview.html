@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <link href="{% static 'css/now-ui-kit.css' %}" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <link href="{% static 'css/stylebgimage.css' %}" rel="stylesheet" />
+    <meta charset="UTF-8">
+    <title>HeartHealth Profile Page</title>
+
+</head>
+
+<body class="profile-page sidebar-collapse">
+ <nav class="navbar navbar-expand-lg bg-primary fixed-top navbar-transparent" color-on-scroll="400" >
+        <div class="container">
+            <div class="collapse navbar-collapse justify-content-end" id="navigation" data-nav-image="">
+                <ul class="nav nav-tabs" data-tabs="tabs">
+                    <li class="nav-item">
+                        <a href="{% url 'predict:predict' pk=user_id %}" class="btn btn-neutral">Predict</a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="{% url 'accounts:logout'%}"  class="btn btn-neutral">Logout</a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="wrapper">
+        <div class="page-header page-header-small" filter-color="orange" style="max-height: 100px;">
+            <div class="page-header-image bg1" data-parallax="true" >
+            </div>
+            <div class="container">
+                <div class="content-center">
+                    <div class="photo-container">
+                        <img src="{{userprofileinfo.profile_pic.url}}" width="100%" height="100%"/>
+                    </div>
+                    <h3 class="title">{{ userprofileinfo.user.username }}</h3>
+                    <p class="h5">{{ userprofileinfo.user.email }}</p>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <div class="section">
+            <div class="container">
+                <div class="button-container">
+
+                        <i class="fa fa-github"></i>
+                    </a>
+
+                </div>
+            </div>
+    </div>
+    <div class="container">
+    <div class="card-header bg-warning btn-round text-white">Predictions</div>
+        <hr>
+        {% for pred in userprofileinfo.predict.all  %}
+            <br>
+
+             <div class="card card-login" style="width: 100%">
+                
+                    {% if pred.result %}
+                    <div class="card-header bg-danger text-white" style="height: 50px;"> Prediction : You have a risk of heart health
+                    </div>
+                    {% else %}
+                    <div class="card-header bg-success text-white" style="height: 50px;"> Prediction : You do not have a risk of heart health
+                    </div>
+                    {% endif %}
+                    <div class="container">
+                        <br>
+                        <p>Age: {{pred.age}}</p>
+                        {%if pred.gender == 1 %}
+                        <p>Gender: Male</p>
+                        {% else %}
+                        <p>Gender: Female</p>
+                        {% endif %}
+                        
+                    </div>
+                    <div class="card-footer bg-light" >Predicted on {{ pred.predicted_on }}</div>
+
+            </div>
+            <br>
+        {% endfor %}
+
+
+    </div>
+
+</body>
+</html>
